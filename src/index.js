@@ -3,17 +3,20 @@ module.exports = function check(str, bracketsConfig) {
   let strArr = str.split("");
   const open = bracketsConfig.map(([open]) => open);
   const close = bracketsConfig.map(([, close]) => close);
-  for (let i = 0; i < strArr.length; i++) {
-    if (open.includes(strArr[i])) {
-      symbol.push(strArr[i]);
+  strArr.forEach((e, i) => {
+    if (i === 0) {
+      symbol.push(e);
+      return;
     }
-    if (close.includes(strArr[i])) {
-      if (open[close.indexOf(strArr[i])] === symbol[symbol.length - 1]) {
+    if (close.includes(e)) {
+      if (open[close.indexOf(e)] === symbol[symbol.length - 1]) {
         symbol.pop();
       } else {
-        return false;
+        symbol.push(e);
       }
+    } else {
+      symbol.push(e);
     }
-  }
+  });
   return symbol.length === 0;
 };
